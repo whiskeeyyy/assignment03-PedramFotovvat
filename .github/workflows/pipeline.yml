@@ -33,6 +33,9 @@ jobs:
         run: npx wait-on http://localhost:3000
 
       - name: Run tests
+        env:
+          TEST_USERNAME: ${{ secrets.TEST_USERNAME}}
+          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD}}
         run: npm run run-tests
 
       - name: Save test results as artifacts
