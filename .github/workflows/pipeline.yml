@@ -27,7 +27,7 @@ jobs:
         run: docker pull rasilva1986/my-vue-app:v1
 
       - name: Start Application
-        run: docker run -d -p 3000:3000 rasilva/1986/my-vue-app:v1
+        run: docker run -d -p 3000:3000 rasilva1986/my-vue-app:v1
 
       - name: Wait until application is up
         run: npx wait-on http://localhost:3000
