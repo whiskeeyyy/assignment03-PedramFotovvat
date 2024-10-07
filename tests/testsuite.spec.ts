@@ -15,7 +15,7 @@ test.describe("Frontend tests", () => {
     await page.locator("a.btn:nth-child(2)").click();
 
     await expect(page.locator("div.field:nth-child(1) > input:nth-child(2)")).toBeEditable();
-    await expect(page.locator("div.field:nth-child(1) > input:nth-child(2)")).toBeVisible(); 
+    await expect(page.locator("div.field:nth-child(1) > input:nth-child(2)")).toBeVisible();
     await expect(page.locator(".checkbox")).toBeEnabled();
     await expect(page.locator("a.btn:nth-child(2)")).toBeVisible();
 
@@ -23,14 +23,14 @@ test.describe("Frontend tests", () => {
     await (page.locator("div.field:nth-child(1) > input:nth-child(2)")).fill("1500");
     await (page.locator(".checkbox")).click();
     await (page.locator("a.btn:nth-child(2)")).click();
-    
+
     await expect(page.locator("div.container:nth-child(2) > h2:nth-child(1) > div:nth-child(1)")).toBeVisible();
     await (page.locator("a.btn:nth-child(1)")).click();
 
     await expect(page.locator("div.container:nth-child(2) > h2:nth-child(1)")).toBeVisible();
 
   });
-  
+
   test('Test case 2 - Delete all rooms that exist on a fresh start of the application and assert that there are no more rooms.', async ({ page }) => {
     await page.goto('http://localhost:3000/login');
     await page.locator('input[type="text"]').fill(`${process.env.TEST_USERNAME}`);
@@ -51,20 +51,33 @@ test.describe("Frontend tests", () => {
 
   });
 
-
-
-
 })
 
 test.describe("Backend tests", () => {
-  test('Test Case 1 - Create a Bill', async ({ request }) => {
-    const response = await request.post("http://localhost:3000/login", {
+  test('Test Case 1 - Get all clients and assert status 200', async ({ request }) => {
+    const response = await request.post("http://localhost:3000/api/login", {
       data: {
         "username": `${process.env.TEST_USERNAME}`,
         "password": `${process.env.TEST_PASSWORD}`
       }
     });
-      //expect(response.ok()).toBeTruthy();
-  });
-});
+    expect(response.ok()).toBeTruthy();
 
+    const clientsResponse = await request.get("http://localhost:3000/clients");
+    expect(clientsResponse.status()).toBe(200);
+  });
+
+  test('Test Case 2 - Get all reservations and assert status 200', async ({ request }) => {
+    const response = await request.post("http://localhost:3000/api/login", {
+      data: {
+        "username": `${process.env.TEST_USERNAME}`,
+        "password": `${process.env.TEST_PASSWORD}`
+      }
+    });
+    expect(response.ok()).toBeTruthy();
+
+    const reservationsResponse = await request.get("http://localhost:3000/reservations");
+    expect(reservationsResponse.status()).toBe(200);
+  });
+
+})
